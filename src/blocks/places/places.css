@@ -1,0 +1,26 @@
+.places {
+  padding-block: 16px 60px;
+}
+
+.places__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 17px;
+}
+
+.places__item {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 880px) {
+  .places__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .places__list {
+    grid-template-columns: 1fr;
+  }
+}

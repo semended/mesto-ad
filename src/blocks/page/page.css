@@ -1,0 +1,54 @@
+.page {
+  min-block-size: 100vh;
+  margin: 0;
+  background-color: #fff;
+  color: #000;
+  font-family: var(--font-family);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.page__content {
+  max-inline-size: 880px;
+  margin-inline: auto;
+  padding-inline: 20px;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100vh;
+}
+
+.page__section {
+  inline-size: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+img {
+  display: block;
+  max-inline-size: 100%;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}

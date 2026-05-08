@@ -1,0 +1,11 @@
+.footer {
+  margin-block-start: auto;
+  padding-block: 40px 20px;
+}
+
+.footer__copyright {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 400;
+  color: #a9a9a9;
+}

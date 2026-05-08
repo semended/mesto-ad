@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  align-items: center;
+  border-block-end: 1px solid rgba(0, 0, 0, 0.7);
+  padding-block: 45px;
+  inline-size: 100%;
+}
+
+.header__logo {
+  inline-size: 142px;
+  block-size: 33px;
+  object-fit: contain;
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding-block: 28px;
+    justify-content: center;
+  }
+
+  .header__logo {
+    inline-size: 104px;
+    block-size: 24px;
+  }
+}

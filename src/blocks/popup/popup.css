@@ -1,0 +1,165 @@
+.popup {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+  z-index: 100;
+}
+
+.popup_is-opened {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.popup_is-animated {
+  /* класс на body, чтобы анимация не запускалась при загрузке */
+}
+
+.popup__container {
+  position: relative;
+  background: #fff;
+  border-radius: 10px;
+  padding: 34px 36px 37px;
+  inline-size: 100%;
+  max-inline-size: 430px;
+  box-sizing: border-box;
+}
+
+.popup__container_type_image {
+  background: transparent;
+  padding: 0;
+  max-inline-size: 75vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.popup__close {
+  position: absolute;
+  inset-block-start: -40px;
+  inset-inline-end: -40px;
+  inline-size: 32px;
+  block-size: 32px;
+  background-image: url('../../images/close.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: opacity 0.2s ease;
+}
+
+.popup__close:hover {
+  opacity: 0.6;
+}
+
+.popup__title {
+  margin: 0 0 38px;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.popup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.popup__label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.popup__input {
+  inline-size: 100%;
+  border: 0;
+  border-block-end: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0 0 13px;
+  font-size: 14px;
+  line-height: 1.2;
+  outline: none;
+  background: transparent;
+}
+
+.popup__input:focus {
+  border-color: rgba(0, 0, 0, 0.6);
+}
+
+.popup__input_type_error {
+  border-color: #ff0000;
+}
+
+.popup__error {
+  font-size: 12px;
+  line-height: 1.2;
+  color: #ff0000;
+  min-block-size: 14px;
+}
+
+.popup__error_visible {
+  /* реализация через JS — текст появляется при наличии ошибки */
+}
+
+.popup__button {
+  inline-size: 100%;
+  background: #000;
+  color: #fff;
+  border-radius: 2px;
+  padding-block: 14px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-block-start: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.popup__button:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.popup__button_disabled {
+  background: #fff;
+  color: #000;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.popup__image {
+  max-inline-size: 75vw;
+  max-block-size: 75vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.popup__caption {
+  color: #fff;
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+@media (max-width: 600px) {
+  .popup__container {
+    padding: 25px 22px;
+  }
+
+  .popup__close {
+    inset-block-start: -36px;
+    inset-inline-end: 0;
+    inline-size: 26px;
+    block-size: 26px;
+  }
+
+  .popup__title {
+    font-size: 18px;
+    margin-block-end: 24px;
+  }
+}
