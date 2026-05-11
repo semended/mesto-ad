@@ -72,7 +72,7 @@ function renderUser(user) {
 }
 
 function renderCards(cards) {
-  placesList.innerHTML = '';
+  placesList.replaceChildren();
   cards.forEach((cardData) => {
     placesList.append(
       createCard(cardData, currentUserId, { onImageClick: openImagePopup })

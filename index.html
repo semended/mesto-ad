@@ -82,7 +82,8 @@
         <form name="new-place" class="popup__form" novalidate>
           <label class="popup__label">
             <input type="text" name="place-name" class="popup__input popup__input_type_card-name"
-              placeholder="Название" required minlength="2" maxlength="30" />
+              placeholder="Название" required minlength="2" maxlength="30"
+              pattern="^[A-Za-zА-Яа-яЁё\s\-]+$" />
             <span class="popup__error popup__error_visible" data-error-for="place-name"></span>
           </label>
           <label class="popup__label">
@@ -90,7 +91,7 @@
               placeholder="Ссылка на картинку" required />
             <span class="popup__error popup__error_visible" data-error-for="link"></span>
           </label>
-          <button type="submit" class="popup__button">Сохранить</button>
+          <button type="submit" class="popup__button">Создать</button>
         </form>
       </div>
     </div>

@@ -39,13 +39,21 @@ function hasInvalidInput(inputs) {
   return inputs.some((input) => !input.validity.valid);
 }
 
+function disableSubmitButton(button, settings) {
+  button.disabled = true;
+  button.classList.add(settings.inactiveButtonClass);
+}
+
+function enableSubmitButton(button, settings) {
+  button.disabled = false;
+  button.classList.remove(settings.inactiveButtonClass);
+}
+
 function toggleButtonState(inputs, button, settings) {
   if (hasInvalidInput(inputs)) {
-    button.disabled = true;
-    button.classList.add(settings.inactiveButtonClass);
+    disableSubmitButton(button, settings);
   } else {
-    button.disabled = false;
-    button.classList.remove(settings.inactiveButtonClass);
+    enableSubmitButton(button, settings);
   }
 }
 
@@ -85,7 +93,6 @@ export function clearValidation(formElement, settings) {
   });
 
   if (button) {
-    button.disabled = true;
-    button.classList.add(settings.inactiveButtonClass);
+    disableSubmitButton(button, settings);
   }
 }
