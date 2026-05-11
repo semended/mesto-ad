@@ -1,6 +1,8 @@
 # Mesto
 
-Финальный проект курса фронтенд-разработки. Интерактивная страница со списком карточек, лайками, удалением, редактированием профиля и сменой аватара. Подключение к API Practicum, сборка через Vite, деплой через GitHub Actions из приватного репозитория с исходниками в отдельный публичный репозиторий со сборкой.
+**Открыть проект:** https://semended.github.io/mesto-ad/
+
+Финальный проект курса фронтенд-разработки. Интерактивная страница со списком карточек, лайками, удалением, редактированием профиля и сменой аватара. Подключение к API Practicum, сборка через Vite, деплой на GitHub Pages через `gh-pages`.
 
 ## Стек
 
@@ -48,41 +50,17 @@ npm run preview
 
 ## Деплой
 
-Схема:
+```bash
+npm run deploy
+```
 
-- исходный код находится в **приватном** репозитории;
-- GitHub Actions запускается в приватном репозитории при push в `main`;
-- workflow ставит зависимости и собирает проект через `npm run build`;
-- содержимое папки `dist` пушится в **отдельный публичный** репозиторий;
-- в публичном репозитории лежит только готовая сборка;
-- GitHub Pages настраивается в публичном репозитории.
-
-Workflow: `.github/workflows/deploy.yml` (`peaceiris/actions-gh-pages@v3`, опция `external_repository`).
-
-### Secrets в приватном репозитории (с исходниками)
-
-Settings → Secrets and variables → Actions → New repository secret:
-
-| Имя                    | Значение                                                                 |
-| ---------------------- | ------------------------------------------------------------------------ |
-| `VITE_MESTO_GROUP_ID`  | ID когорты из курса, например `wff-cohort-XX`                           |
-| `VITE_MESTO_TOKEN`     | токен доступа к API Practicum                                           |
-| `PUBLIC_PAGES_TOKEN`   | GitHub Personal Access Token с правами `repo` (для пуша в публичный репо) |
-| `PUBLIC_PAGES_REPO`    | публичный репозиторий в формате `owner/repo`, например `semended/mesto-production` |
-| `PUBLIC_PAGES_BRANCH`  | (опционально) ветка публикации; по умолчанию `main`                     |
-
-`PUBLIC_PAGES_TOKEN` создаётся в GitHub → Settings → Developer settings → Personal access tokens. Нужны права `repo` (полный доступ к репозиториям пользователя).
-
-### Настройка публичного репозитория
-
-В публичном репозитории (туда деплоится сборка):
+Скрипт собирает проект и пушит содержимое `dist/` в ветку `gh-pages` текущего репозитория через пакет `gh-pages`. GitHub Pages в настройках репозитория:
 
 - Settings → **Pages**
 - Source: **Deploy from a branch**
-- Branch: **main**
-- Folder: **`/` (root)**
+- Branch: **`gh-pages`**, Folder: **`/ (root)`**
 
-После первого успешного запуска workflow в публичном репо появится ветка `main` с содержимым `dist/`. Pages подхватит её и опубликует сайт по адресу `https://<owner>.github.io/<repo>/`.
+После публикации сайт доступен по адресу `https://<owner>.github.io/<repo>/`.
 
 `base: './'` в `vite.config.js` гарантирует корректные относительные пути на любом подпути GH Pages.
 
