@@ -1,165 +1,43 @@
+@import url('./__content/popup__content.css');
+@import url('./__content/_content/popup__content_content_image.css');
+@import url('./__content/_content/popup__content_content_info.css');
+@import url('./__close/popup__close.css');
+@import url('./__title/popup__title.css');
+@import url('./__form/popup__form.css');
+@import url('./__input/popup__input.css');
+@import url('./__input/_type/popup__input_type_error.css');
+@import url('./__button/popup__button.css');
+@import url('./__button/_disabled/popup__button_disabled.css');
+@import url('./__caption/popup__caption.css');
+@import url('./__image/popup__image.css');
+@import url('./__label/popup__label.css');
+@import url('./__error/popup__error.css');
+@import url('./__text/popup__text.css');
+@import url('./__error/_visible/popup__error_visible.css');
+@import url('./__info/popup__info.css');
+@import url('./__info-item/popup__info-item.css');
+@import url('./__info-description/popup__info-description.css');
+@import url('./__info-term/popup__info-term.css');
+@import url('./__list/popup__list.css');
+@import url('./__list-item/popup__list-item.css');
+@import url('./__list-item/_type/popup__list-item_type_badge.css');
+
+
 .popup {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  font-family: 'Inter', Arial, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  background-color: rgba(0, 0, 0, .5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  /*Стили для плавного появления модалки*/
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
-  z-index: 100;
-}
-
-.popup_is-opened {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 0.25s ease;
-}
-
-.popup_is-animated {
-  /* класс на body, чтобы анимация не запускалась при загрузке */
-}
-
-.popup__container {
-  position: relative;
-  background: #fff;
-  border-radius: 10px;
-  padding: 34px 36px 37px;
-  inline-size: 100%;
-  max-inline-size: 430px;
-  box-sizing: border-box;
-}
-
-.popup__container_type_image {
-  background: transparent;
-  padding: 0;
-  max-inline-size: 75vw;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.popup__close {
-  position: absolute;
-  inset-block-start: -40px;
-  inset-inline-end: -40px;
-  inline-size: 32px;
-  block-size: 32px;
-  background-image: url('../../images/close.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  transition: opacity 0.2s ease;
-}
-
-.popup__close:hover {
-  opacity: 0.6;
-}
-
-.popup__title {
-  margin: 0 0 38px;
-  font-size: 24px;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.popup__form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.popup__label {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.popup__input {
-  inline-size: 100%;
-  border: 0;
-  border-block-end: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 0 0 13px;
-  font-size: 14px;
-  line-height: 1.2;
-  outline: none;
-  background: transparent;
-}
-
-.popup__input:focus {
-  border-color: rgba(0, 0, 0, 0.6);
-}
-
-.popup__input_type_error {
-  border-color: #ff0000;
-}
-
-.popup__error {
-  font-size: 12px;
-  line-height: 1.2;
-  color: #ff0000;
-  min-block-size: 14px;
-}
-
-.popup__error_visible {
-  /* реализация через JS — текст появляется при наличии ошибки */
-}
-
-.popup__button {
-  inline-size: 100%;
-  background: #000;
-  color: #fff;
-  border-radius: 2px;
-  padding-block: 14px;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 1.2;
-  margin-block-start: 8px;
-  transition: opacity 0.2s ease;
-}
-
-.popup__button:hover:not(:disabled) {
-  opacity: 0.85;
-}
-
-.popup__button_disabled {
-  background: #fff;
-  color: #000;
-  border: 1px solid rgba(0, 0, 0, 0.2);
   pointer-events: none;
-  opacity: 0.6;
-}
-
-.popup__image {
-  max-inline-size: 75vw;
-  max-block-size: 75vh;
-  object-fit: contain;
-  border-radius: 10px;
-}
-
-.popup__caption {
-  color: #fff;
-  margin: 8px 0 0;
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-@media (max-width: 600px) {
-  .popup__container {
-    padding: 25px 22px;
-  }
-
-  .popup__close {
-    inset-block-start: -36px;
-    inset-inline-end: 0;
-    inline-size: 26px;
-    block-size: 26px;
-  }
-
-  .popup__title {
-    font-size: 18px;
-    margin-block-end: 24px;
-  }
+  transition: visibility 0.3s, opacity 0.3s;
+  z-index: 10;
 }

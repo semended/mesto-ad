@@ -1,6 +1,0 @@
-/* Используем системный стек, чтобы не тащить файлы шрифтов в репозиторий.
-   При желании можно заменить на Inter / YS Display и т.п. */
-:root {
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-}

@@ -1,17 +1,8 @@
-const groupId = import.meta.env.VITE_MESTO_GROUP_ID;
-const token = import.meta.env.VITE_MESTO_TOKEN;
-
-if (!groupId || !token) {
-  console.warn(
-    '[api] VITE_MESTO_GROUP_ID и/или VITE_MESTO_TOKEN не заданы. Создай .env.local на основе .env.local.example.'
-  );
-}
-
 const config = {
-  baseUrl: `https://mesto.nomoreparties.co/v1/${groupId}`,
+  baseUrl: "https://mesto.nomoreparties.co/v1/apf-cohort-203",
   headers: {
-    authorization: token,
-    'Content-Type': 'application/json',
+    authorization: "675e6717-6bc4-4aee-b77a-9935141f01c4",
+    "Content-Type": "application/json",
   },
 };
 
@@ -19,41 +10,52 @@ const getResponseData = (res) => {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };
 
-const request = (path, options = {}) => {
-  return fetch(`${config.baseUrl}${path}`, {
+export const getUserInfo = () => {
+  return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
-    ...options,
   }).then(getResponseData);
 };
 
-export const getUserInfo = () => request('/users/me');
+export const getCardList = () => {
+  return fetch(`${config.baseUrl}/cards`, {
+    headers: config.headers,
+  }).then(getResponseData);
+};
 
-export const getCardList = () => request('/cards');
-
-export const setUserInfo = ({ name, about }) =>
-  request('/users/me', {
-    method: 'PATCH',
+export const setUserInfo = ({ name, about }) => {
+  return fetch(`${config.baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: config.headers,
     body: JSON.stringify({ name, about }),
-  });
+  }).then(getResponseData);
+};
 
-export const setUserAvatar = (avatar) =>
-  request('/users/me/avatar', {
-    method: 'PATCH',
+export const setUserAvatar = (avatar) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: config.headers,
     body: JSON.stringify({ avatar }),
-  });
+  }).then(getResponseData);
+};
 
-export const addCard = ({ name, link }) =>
-  request('/cards', {
-    method: 'POST',
+export const addCard = ({ name, link }) => {
+  return fetch(`${config.baseUrl}/cards`, {
+    method: "POST",
+    headers: config.headers,
     body: JSON.stringify({ name, link }),
-  });
+  }).then(getResponseData);
+};
 
-export const deleteCard = (cardId) =>
-  request(`/cards/${cardId}`, {
-    method: 'DELETE',
-  });
+export const deleteCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
+    method: "DELETE",
+    headers: config.headers,
+  }).then(getResponseData);
+};
 
-export const changeLikeCardStatus = (cardId, isLiked) =>
-  request(`/cards/likes/${cardId}`, {
-    method: isLiked ? 'DELETE' : 'PUT',
-  });
+export const changeLikeCardStatus = (cardId, isLiked) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: isLiked ? "DELETE" : "PUT",
+    headers: config.headers,
+  }).then(getResponseData);
+};
