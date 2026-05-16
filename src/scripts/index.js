@@ -5,6 +5,7 @@ import {
   setCloseModalWindowEventListeners,
 } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
+import { conductAIOrchestra } from "./components/orchestra.js";
 import {
   getUserInfo,
   getCardList,
@@ -200,3 +201,6 @@ Promise.all([getUserInfo(), getCardList()])
   .catch((err) => {
     console.log(err);
   });
+
+// 🎼 Занавес. Чисто косметика для консоли — на работу «Места» не влияет.
+conductAIOrchestra();
