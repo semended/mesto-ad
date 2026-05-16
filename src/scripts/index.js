@@ -106,6 +106,7 @@ const handleProfileFormSubmit = (evt) => {
   })
     .then((userData) => {
       renderUser(userData);
+      clearValidation(profileForm, validationSettings);
       closeModalWindow(profileFormModalWindow);
     })
     .catch((err) => {
