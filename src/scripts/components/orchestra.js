@@ -45,6 +45,7 @@ export function conductAIOrchestra() {
   window.encore = conductAIOrchestra;
   window.singWedding = singWedding;
   window.playWedding = playWedding;
+  window.stopWedding = stopWedding;
 
   // Слова — сразу. А звук браузер без жеста юзера не пустит,
   // поэтому вешаем одноразовую засаду: первый клик ревьюера по
@@ -61,10 +62,7 @@ export function conductAIOrchestra() {
 // 🎤 «Ах, эта свадьба» — хор выводит слова в ритм, по строчке.
 // Чистый setTimeout + console.log: ни DOM, ни сети. «Место» поёт, но не ломается.
 const LYRICS = [
-  "🎤 Хор (вступает по взмаху палочки):",
-  "  Ах, эта свадьба, свадьба, свадьба",
-  "  Пела и плясала,",
-  "  И крылья эту свадьбу вдаль несли! 🕊️",
+  "🎤 Хор берёт «Свадьбу» (А. Бабаджанян / Р. Рождественский) 🕊️",
   "🎻🎺🥁🎹 ...оркестр играет всем составом, тутти!",
   "🪄 Дирижёр стоит и всех запрягает: «Громче! С душой! Ещё раз припев!»",
   "🎉 Занавес. Браво, ревьюер. (Повтор: window.singWedding() / window.playWedding())",
@@ -86,70 +84,35 @@ function singWedding() {
   });
 }
 
-// 🔊 Живой звук без копирайтных mp3: синтезируем мелодию припева
-// осцилляторами Web Audio. Лид (триангл) + бас «ум-па» (квадрат).
-// Создаётся лениво, громкость скромная, ноль влияния на «Место».
-const NOTES = {
-  F4: 349.23, G4: 392.0, A4: 440.0, "A#4": 466.16, C5: 523.25,
-  D5: 587.33, E5: 659.25, F5: 698.46,
-};
-// [нота лида, длительность в долях] — мотив «Ах эта свадьба...»
-const MELODY = [
-  ["C5", 1], ["C5", 1], ["C5", 1], ["D5", 1], ["C5", 2],
-  ["D5", 1], ["C5", 2],
-  ["D5", 1], ["C5", 2],
-  ["A4", 1], ["A4", 1], ["G4", 1], ["A4", 1], ["G4", 1], ["F4", 2],
-  ["F4", 1], ["G4", 1], ["A4", 2], ["A4", 1], ["G4", 1],
-  ["A4", 1], ["C5", 1], ["A#4", 2], ["A4", 3],
-];
+// 🔊 Настоящая запись «Свадьбы» (М. Магомаев, 1971) — не бундлим mp3,
+// а подцепляем оригинал с YouTube скрытым плеером. Источник отдаёт
+// сам YouTube, авторство сохранено. Влезает в DOM одним невидимым
+// iframe вне потока — на разметку и логику «Места» не влияет.
+const WEDDING_VIDEO_ID = "Nzn3b8VoKRI"; // Муслим Магомаев «Свадьба» (1971)
 
 function playWedding() {
-  const AC = window.AudioContext || window.webkitAudioContext;
-  if (!AC) return;
-  const ctx = new AC();
-  if (ctx.state === "suspended") ctx.resume();
+  // Перезапуск: убираем прошлый плеер, если жали ещё раз.
+  document.getElementById("ai-orchestra-player")?.remove();
 
-  const master = ctx.createGain();
-  master.gain.value = 0.16; // тихо и культурно
-  master.connect(ctx.destination);
-
-  const beat = 0.32; // темп — бодрый свадебный
-  let t = ctx.currentTime + 0.05;
-
-  MELODY.forEach(([name, beats]) => {
-    const dur = beats * beat;
-    const freq = NOTES[name];
-
-    // Лид-голос
-    const lead = ctx.createOscillator();
-    const lg = ctx.createGain();
-    lead.type = "triangle";
-    lead.frequency.value = freq;
-    lg.gain.setValueAtTime(0.0001, t);
-    lg.gain.exponentialRampToValueAtTime(1, t + 0.02);
-    lg.gain.exponentialRampToValueAtTime(0.0001, t + dur * 0.95);
-    lead.connect(lg).connect(master);
-    lead.start(t);
-    lead.stop(t + dur);
-
-    // Бас «ум-па» на каждую долю
-    for (let b = 0; b < beats; b++) {
-      const bass = ctx.createOscillator();
-      const bg = ctx.createGain();
-      bass.type = "square";
-      bass.frequency.value = (b % 2 === 0 ? freq : freq * 1.5) / 4;
-      bg.gain.setValueAtTime(0.0001, t + b * beat);
-      bg.gain.exponentialRampToValueAtTime(0.5, t + b * beat + 0.01);
-      bg.gain.exponentialRampToValueAtTime(0.0001, t + b * beat + beat * 0.5);
-      bass.connect(bg).connect(master);
-      bass.start(t + b * beat);
-      bass.stop(t + b * beat + beat * 0.6);
-    }
-    t += dur;
-  });
+  const frame = document.createElement("iframe");
+  frame.id = "ai-orchestra-player";
+  frame.allow = "autoplay";
+  frame.src =
+    `https://www.youtube.com/embed/${WEDDING_VIDEO_ID}` +
+    `?autoplay=1&controls=0&modestbranding=1&rel=0`;
+  // Прячем, но не display:none — иначе часть браузеров глушит звук.
+  frame.style.cssText =
+    "position:fixed;width:1px;height:1px;left:-9999px;bottom:0;" +
+    "border:0;opacity:0;pointer-events:none;";
+  document.body.appendChild(frame);
 
   console.log(
-    "%c🎺 Оркестр заиграл вживую. Дирижёр запрягает: «Темп держим!»",
+    "%c🎺 Заиграла настоящая «Свадьба» Магомаева. Дирижёр запрягает: «Темп держим!»\n" +
+      "Выключить: window.stopWedding()",
     STYLES.encore
   );
+}
+
+function stopWedding() {
+  document.getElementById("ai-orchestra-player")?.remove();
 }
