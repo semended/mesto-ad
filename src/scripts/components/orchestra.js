@@ -89,6 +89,9 @@ function singWedding() {
 // сам YouTube, авторство сохранено. Влезает в DOM одним невидимым
 // iframe вне потока — на разметку и логику «Места» не влияет.
 const WEDDING_VIDEO_ID = "Nzn3b8VoKRI"; // Муслим Магомаев «Свадьба» (1971)
+// Старт сразу с припева, чтобы ревью шло бодро. Значение примерное —
+// подкрути секунду под конкретную запись, если промахнулись по такту.
+const WEDDING_START_SEC = 49;
 
 function playWedding() {
   // Перезапуск: убираем прошлый плеер, если жали ещё раз.
@@ -99,7 +102,7 @@ function playWedding() {
   frame.allow = "autoplay";
   frame.src =
     `https://www.youtube.com/embed/${WEDDING_VIDEO_ID}` +
-    `?autoplay=1&controls=0&modestbranding=1&rel=0`;
+    `?autoplay=1&controls=0&modestbranding=1&rel=0&start=${WEDDING_START_SEC}`;
   // Прячем, но не display:none — иначе часть браузеров глушит звук.
   frame.style.cssText =
     "position:fixed;width:1px;height:1px;left:-9999px;bottom:0;" +
