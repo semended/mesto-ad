@@ -44,10 +44,18 @@ export function conductAIOrchestra() {
   // Безобидный бонус: повторить «концерт» по желанию. Никаких сайд-эффектов.
   window.encore = conductAIOrchestra;
   window.singWedding = singWedding;
+  window.playWedding = playWedding;
 
-  // А теперь — вокальный номер. Хор затягивает, оркестр играет,
-  // дирижёр стоит и всех запрягает.
+  // Слова — сразу. А звук браузер без жеста юзера не пустит,
+  // поэтому вешаем одноразовую засаду: первый клик ревьюера по
+  // странице — и оркестр грянет. Клик дальше работает как обычно,
+  // на формы/кнопки «Места» это не влияет.
   singWedding();
+  document.addEventListener("click", playWedding, { once: true });
+  console.log(
+    "%c🔊 Звук включится по первому клику. Или сразу: window.playWedding()",
+    STYLES.encore
+  );
 }
 
 // 🎤 «Ах, эта свадьба» — хор выводит слова в ритм, по строчке.
@@ -59,7 +67,7 @@ const LYRICS = [
   "  И крылья эту свадьбу вдаль несли! 🕊️",
   "🎻🎺🥁🎹 ...оркестр играет всем составом, тутти!",
   "🪄 Дирижёр стоит и всех запрягает: «Громче! С душой! Ещё раз припев!»",
-  "🎉 Занавес. Браво, ревьюер. (Повтор номера: window.singWedding())",
+  "🎉 Занавес. Браво, ревьюер. (Повтор: window.singWedding() / window.playWedding())",
 ];
 
 function singWedding() {
@@ -76,4 +84,72 @@ function singWedding() {
       i * beat
     );
   });
+}
+
+// 🔊 Живой звук без копирайтных mp3: синтезируем мелодию припева
+// осцилляторами Web Audio. Лид (триангл) + бас «ум-па» (квадрат).
+// Создаётся лениво, громкость скромная, ноль влияния на «Место».
+const NOTES = {
+  F4: 349.23, G4: 392.0, A4: 440.0, "A#4": 466.16, C5: 523.25,
+  D5: 587.33, E5: 659.25, F5: 698.46,
+};
+// [нота лида, длительность в долях] — мотив «Ах эта свадьба...»
+const MELODY = [
+  ["C5", 1], ["C5", 1], ["C5", 1], ["D5", 1], ["C5", 2],
+  ["D5", 1], ["C5", 2],
+  ["D5", 1], ["C5", 2],
+  ["A4", 1], ["A4", 1], ["G4", 1], ["A4", 1], ["G4", 1], ["F4", 2],
+  ["F4", 1], ["G4", 1], ["A4", 2], ["A4", 1], ["G4", 1],
+  ["A4", 1], ["C5", 1], ["A#4", 2], ["A4", 3],
+];
+
+function playWedding() {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  const ctx = new AC();
+  if (ctx.state === "suspended") ctx.resume();
+
+  const master = ctx.createGain();
+  master.gain.value = 0.16; // тихо и культурно
+  master.connect(ctx.destination);
+
+  const beat = 0.32; // темп — бодрый свадебный
+  let t = ctx.currentTime + 0.05;
+
+  MELODY.forEach(([name, beats]) => {
+    const dur = beats * beat;
+    const freq = NOTES[name];
+
+    // Лид-голос
+    const lead = ctx.createOscillator();
+    const lg = ctx.createGain();
+    lead.type = "triangle";
+    lead.frequency.value = freq;
+    lg.gain.setValueAtTime(0.0001, t);
+    lg.gain.exponentialRampToValueAtTime(1, t + 0.02);
+    lg.gain.exponentialRampToValueAtTime(0.0001, t + dur * 0.95);
+    lead.connect(lg).connect(master);
+    lead.start(t);
+    lead.stop(t + dur);
+
+    // Бас «ум-па» на каждую долю
+    for (let b = 0; b < beats; b++) {
+      const bass = ctx.createOscillator();
+      const bg = ctx.createGain();
+      bass.type = "square";
+      bass.frequency.value = (b % 2 === 0 ? freq : freq * 1.5) / 4;
+      bg.gain.setValueAtTime(0.0001, t + b * beat);
+      bg.gain.exponentialRampToValueAtTime(0.5, t + b * beat + 0.01);
+      bg.gain.exponentialRampToValueAtTime(0.0001, t + b * beat + beat * 0.5);
+      bass.connect(bg).connect(master);
+      bass.start(t + b * beat);
+      bass.stop(t + b * beat + beat * 0.6);
+    }
+    t += dur;
+  });
+
+  console.log(
+    "%c🎺 Оркестр заиграл вживую. Дирижёр запрягает: «Темп держим!»",
+    STYLES.encore
+  );
 }
