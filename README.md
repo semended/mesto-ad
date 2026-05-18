@@ -33,3 +33,4 @@ npm run deploy
 ```
 
 Также при каждом push в `main` запускается workflow `.github/workflows/deploy.yml`, который собирает проект и публикует содержимое `dist/` в публичный репозиторий через GitHub Actions.
+
